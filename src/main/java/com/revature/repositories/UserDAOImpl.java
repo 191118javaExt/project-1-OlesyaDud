@@ -1,153 +1,129 @@
 package com.revature.repositories;
 
+
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
+
+import com.revature.models.Reimbursement;
 import com.revature.models.User;
-import com.revature.util.CloseStreams;
 import com.revature.util.ConnectionUtil;
 
 public class UserDAOImpl implements UserDAO {
 	
 	private static Logger logger = Logger.getLogger(UserDAOImpl.class);
-
-//	@Override
-//	public boolean insertEmpl(User e) {
-//		PreparedStatement stmt = null;
-//		
-//		try (Connection conn = ConnectionUtil.getConnection()) {
-//			String sql = "INSERT INTO projectfun.employee (first_name, last_name, username, password) " +
-//					"VALUES (?, ?, ?, ?, ?);";
-//			
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setString(1, e.getFirstName());
-//			stmt.setString(2, e.getLastName());
-//			stmt.setString(3, e.getUsername());
-//			stmt.setString(4, e.getPassword());
-//			
-//			if(!stmt.execute()) {
-//				return false;
-//			}
-//		} catch(SQLException ex) {
-//			logger.warn("Unable to retrieve all users", ex);
-//			return false;
-//		} finally {
-//			CloseStreams.close(stmt);
-//		}
-//		
-//		return true;
-//---------------------------------------------------------------------------------------------	}
 	
-	@Override
-	public boolean createUser(User user) {
-
-		try (Connection conn = ConnectionUtil.getConnection()) {
-
-			String sql = "INSERT into projectone.user0 (username, user_passward, user_fname, user_lname, user_email, user_role_id) " +
-						"VALUES (?, ?, ?, ?, ?, ?);";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, user.getPassword());
-			stmt.setString(3, user.getFirst_name());
-			stmt.setString(4, user.getLast_name());
-			stmt.setString(5, user.getEmail());
-			stmt.setInt(6, user.getRole_id());
-		
-			boolean check = stmt.execute();
-			if(check == false) {
-				return true;
-			}
-
-		} catch (SQLException e) {
-			logger.warn("Unable to create user in databse", e);
-			e.printStackTrace();
-		}
-		return false;
+	private enum QueryType{
+		verifyUser,
+		selectUserById,
+		getUserReimb
 	}
-
-
-//	create table projectone.user0 (
-//	user_id serial primary key,
-//	username varchar(50) not null,
-//	user_passward varchar(50) not null,
-//	user_fname varchar(100) not null,
-//	user_lname varchar(100) not null,
-//	user_email varchar(150) not null,
-//	user_role_id integer references projectone.user_role(role_id)
-//	);
-
-	@Override
-	public List<User> findAll() {
-		
-		List<User> list = new ArrayList<>();
-		
+	private User queryDB(String query, Object[] params, QueryType qType, User model) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			
-			String sql = "SELECT * FROM projectone.user0;";
+
+			String sql = query;
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			
-			ResultSet rs = stmt.executeQuery();
-	
-			while(rs.next()) {
-				
-				int user_id = rs.getInt("user_id");
-				String first_name = rs.getString("user_fname");
-				String last_name = rs.getString("user_lname");
-				String username = rs.getString("username");
-				String email = rs.getString("user_email");
-				String password = rs.getString("user_passward");	
-				int role_id = rs.getInt("user_role_id");
-				
-				list.add(new User(user_id, first_name, last_name, username, email, password, role_id));
+			switch(qType) {
+				case selectUserById:
+					stmt.setObject(1, params[0]);
+					break;
+				case verifyUser:
+					stmt.setObject(1, params[0]);
+					stmt.setObject(2, params[1]);
+					break;
+				case getUserReimb:
+					stmt.setObject(1, params[0]);
+					break;					
 			}
 			
-		} catch(SQLException e) {
-			logger.warn("Unable to retrieve all users", e);
-		}
-		return list;
-	}
-
-
-	@Override
-	public User getUserByUsername(String username) {
-		
-		try (Connection conn = ConnectionUtil.getConnection()) {
-
-			String sql = "SELECT * FROM projectone.user0 WHERE username = ?;";
-			
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			
-			stmt.setString(1, username);
-
 			ResultSet rs = stmt.executeQuery();
+			
+			List<Reimbursement> reimbList = new ArrayList<>();
 			
 			while (rs.next()) {
+				if (qType == QueryType.verifyUser || qType == QueryType.selectUserById) {
+					int user_id = rs.getInt("user_id");
+					String first_name = rs.getString("user_fname");
+					String last_name = rs.getString("user_lname");
+					String username = rs.getString("username");
+					String email = rs.getString("user_email");
+					String password = rs.getString("user_passward");
+					int role_id = rs.getInt("user_role_id");
+	
+					model = new User(user_id, first_name, last_name, username, email, password, role_id);
+				} else if (qType == QueryType.getUserReimb) {
+					
+					
+					int reimb_id = rs.getInt("reimb_id");
+					double reimb_amount = rs.getDouble("reimb_amount");
+					Timestamp reimb_submitted = rs.getTimestamp("reimb_submitted");
+					Timestamp reimb_resolved = rs.getTimestamp("reimb_resolved");
+					String reimb_description = rs.getString("reimb_description");
+					
+					Reimbursement reimbModel = new Reimbursement(reimb_id, reimb_amount, reimb_submitted, 
+							reimb_resolved, reimb_description);
+					
+					
+					reimbList.add(reimbModel);
+				}
 				
-				int user_id = rs.getInt("user_id");
-				String first_name = rs.getString("user_fname");
-				String last_name = rs.getString("user_lname");
-				String username1 = rs.getString("username");
-				String email = rs.getString("user_email");
-				String password = rs.getString("user_passward");	
-				int role_id = rs.getInt("user_role_id");
-
-				User user = new User(user_id, first_name, last_name, username1, email, password, role_id);
-				rs.close();
-				return user;
 			}
-			
-			rs.close();
-		} catch (SQLException e) {
-			logger.warn("Unable to retrieve user from DB", e);
-			e.printStackTrace();
-		}
-		return null;
-	}
-	 
-}
 
+		} catch (SQLException e) {
+			logger.warn("Unable to retrieve all users", e);
+		}
+		return model;
+	}
+	
+//	@Override
+//	public List<User> findAll() {
+//		
+//		List<User> list = new ArrayList<>();
+//		String sqlStr = "SELECT * FROM projectone.user0;";
+//		queryDB(sqlStr);
+//		
+//		return list;
+//	}	
+
+	public User getUserById(int id) {
+		User user = null;
+		String sqlStr = 
+				"SELECT * FROM projectone.user0\r\n" + 
+				"where id = ?;";
+		user = queryDB(sqlStr, new Object[] { id }, QueryType.selectUserById, null);
+		
+		return user;
+	}
+
+	
+	public User verifyLogin(String username, String pass) {
+		User user = null;
+		boolean isLoggedIn = false;
+		String sqlStr = 
+				"SELECT * FROM projectone.user0\r\n" + 
+				"where username = ? and user_passward = ?;";
+		user = queryDB(sqlStr, new Object[] { username, pass }, QueryType.verifyUser, null);
+		
+		return user;
+	}
+	
+	public User getUserReimb(User model) {
+		User user = null;
+		boolean isLoggedIn = false;
+		String sqlStr = 
+				"select * from projectone.reimbursement where reimb_author = ?;";
+		user = queryDB(sqlStr, new Object[] { model.getUser_id() }, QueryType.getUserReimb, model);
+		
+		return user;
+	}
+	
+}

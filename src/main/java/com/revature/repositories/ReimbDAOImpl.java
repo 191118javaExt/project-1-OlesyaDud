@@ -39,15 +39,13 @@ public class ReimbDAOImpl implements ReimbursementDAO {
 	public boolean submitReimb(Reimbursement reimb) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "INSERT into projectone.reimbursement(reimb_amount, reimb_submitted, reimb_resolved, "
+			String sql = "INSERT into projectone.reimbursement(reimb_amount"
 					+ "reimb_discription, reimb_author, reimb_resolver, reimb_status_id, reimb_type_id) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			
 			stmt.setDouble(1, reimb.getReimb_amount());
-			stmt.setTimestamp(2, Timestamp.valueOf(reimb.getSubmitted()));
-			stmt.setTimestamp(3, Timestamp.valueOf(reimb.getResolved()));
 			stmt.setString(4, reimb.getReimb_description());
 			stmt.setBytes(5, reimb.getReimb_receipt());
 			stmt.setInt(6, reimb.getReimb_author());

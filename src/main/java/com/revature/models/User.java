@@ -16,6 +16,7 @@ public class User implements Serializable {
 	private String password;
 	private String email;
 	private int role_id;
+	private Reimbursement[] reimbArr;
 	
 	public User() {
 		super();
@@ -82,6 +83,12 @@ public class User implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public Reimbursement[] getReimbArr() {
+		return reimbArr;
+	}
+	public void setReimbArr(Reimbursement[] reimbArr) {
+		this.reimbArr = reimbArr;
 	}
 
 	

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reimbursement</title>
+    <link rel="stylesheet" href="style.css">
+    <script src ="index.js"></script>
+</head>
+<body>
+
+    <div class="containe-fluid nav-container">
+        <div class="row">
+            
+            <nav class="nav">
+                <a class="logo">ERS</a>
+                <a class="nav-link active" href="index.html">Home</a>
+                <a class="nav-link" href="ers.html">Expense Reimbursements</a>
+                <a class="nav-link" href="register.html">Register</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h3 class="reimbs">Reimbursements</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="jumbotron">
+        <h1 id="welcome">Welcome!</h1>
+        <script>
+            let welcome = document.getElementById('welcome');
+            let userString = sessionStorage.getItem('currentUser');
+            if(userString === null) {
+                window.location = "http://localhost:8080/project-1-OlesyaDud/";
+            } else {
+                let currentUser = JSON.parse(userString);
+                console.log(currentUser);
+                if(currentUser != null) {
+                    welcome.innerHTML = "Welcome " + currentUser.firstName + " "
+                        + currentUser.lastName;
+                }
+            }
+        </script>
+        <button class="btn btn-success" onclick="logout()">LOGOUT</a>
+      </div> -->
+
+
+
+
+
+      <div class="container">
+          <div class="row">
+              <div class="col">
+                <table class="table reimbursment-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">REIMBURSEMENT ID</th>
+                        <th scope="col">TYPE</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">TOTAL AMOUNT</th>
+                        <th scope="col">CREATED DATE</th>
+                        <th scope="col">SUBMITTED DATE</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <th>...</th>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+              </div>
+          </div>
+      </div>
+
+      <!-- js object -->
+      <!-- <script>
+      var Reimb = [
+        {r_id = "1",
+        r_amount = "ammount",
+        r_submitted = "date",
+        r_resolved = "resolved",
+        r_descr = "descr"},
+
+      ];
+      </script> -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script>
+    function logout() {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/project-1-OlesyaDud/logout");
+        xhr.send();
+        
+        sessionStorage.removeItem('currentUser');
+      window.location = "http://localhost:8080/project-1-OlesyaDud/";
+    }
+</script>
+
+</body>
+</html>
