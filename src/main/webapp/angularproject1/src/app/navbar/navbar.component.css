@@ -1,0 +1,15 @@
+.nav {
+  background-color: #62627c;
+  color: white;
+  width: 100%;
+  padding: 7px;
+}
+
+.nav li a {
+  color: white;
+}
+
+.nav li a:hover {
+  background-color: #dfd5d5;
+}
+/*# sourceMappingURL=navbar.component.css.map */

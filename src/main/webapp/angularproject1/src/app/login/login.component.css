@@ -1,0 +1,55 @@
+.first-div {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-color: #62627c;
+  color: #fff;
+  margin-bottom: 400px;
+}
+
+.first-div:before {
+  position: absolute;
+  content: '';
+  /* width: 100%;
+  height:250vh; */
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: inherit;
+  z-index: -1;
+  -webkit-transform: skewY(7deg);
+          transform: skewY(7deg);
+  -webkit-transform-origin: bottom left;
+          transform-origin: bottom left;
+}
+
+.skewed-div {
+  background-color: #62627c;
+  height: 350px;
+  width: 100%;
+  -webkit-transform: skew(0deg, -7deg) translateY(-90px);
+          transform: skew(0deg, -7deg) translateY(-90px);
+  margin-bottom: 1rem;
+  margin-top: 10rem;
+}
+
+.inside-div {
+  color: #62627c;
+  font-size: 19px;
+  -webkit-transform: skew(0deg, 7deg);
+          transform: skew(0deg, 7deg);
+  position: relative;
+  text-align: center;
+  top: 25%;
+  width: 50%;
+  background-color: #dfd5d5;
+  padding: 10px;
+  border: 2px solid #b6afaf;
+  border-radius: 2%;
+}
+
+.login {
+  background-color: #dfd5d5;
+}
+/*# sourceMappingURL=login.component.css.map */
