@@ -26,12 +26,14 @@ public class UserDAOImpl implements UserDAO {
 		selectUserById,
 		getUserReimb
 	}
+	
 	private User queryDB(String query, Object[] params, QueryType qType, User model) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
 			String sql = query;
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			
 			switch(qType) {
 				case selectUserById:
 					stmt.setObject(1, params[0]);
@@ -50,6 +52,7 @@ public class UserDAOImpl implements UserDAO {
 			List<Reimbursement> reimbList = new ArrayList<>();
 			
 			while (rs.next()) {
+				
 				if (qType == QueryType.verifyUser || qType == QueryType.selectUserById) {
 					int user_id = rs.getInt("user_id");
 					String first_name = rs.getString("user_fname");
