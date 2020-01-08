@@ -22,47 +22,27 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid reimb-div">
         <div class="row">
-            <div class="col">
-                <h3 class="reimbs">Reimbursements</h3>
+            <div class="col-lg-6">
+                <h3 class="reimbs">Expense Reimbursements</h3>
             </div>
+            <!-- <div class="col-lg-4">
+                <button>Create Reimbursement</button>
+            </div> -->
         </div>
     </div>
 
-    <!-- <div class="jumbotron">
-        <h1 id="welcome">Welcome!</h1>
-        <script>
-            let welcome = document.getElementById('welcome');
-            let userString = sessionStorage.getItem('currentUser');
-            if(userString === null) {
-                window.location = "http://localhost:8080/project-1-OlesyaDud/";
-            } else {
-                let currentUser = JSON.parse(userString);
-                console.log(currentUser);
-                if(currentUser != null) {
-                    welcome.innerHTML = "Welcome " + currentUser.firstName + " "
-                        + currentUser.lastName;
-                }
-            }
-        </script>
-        <button class="btn btn-success" onclick="logout()">LOGOUT</a>
-      </div> -->
-
-
-
-
-
-      <div class="container">
+      <div class="container reimb-data">
           <div class="row">
               <div class="col">
                 <table class="table reimbursment-table">
                     <thead>
                       <tr>
-                        <th scope="col">REIMBURSEMENT ID</th>
+                        <th scope="col">ID</th>
                         <th scope="col">TYPE</th>
                         <th scope="col">STATUS</th>
-                        <th scope="col">TOTAL AMOUNT</th>
+                        <th scope="col">AMOUNT</th>
                         <th scope="col">CREATED DATE</th>
                         <th scope="col">SUBMITTED DATE</th>
                       </tr>
