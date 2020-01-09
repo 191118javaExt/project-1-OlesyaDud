@@ -1,8 +1,8 @@
+package com.revature.util;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.LoginTemplate;
+import com.revature.models.Reimbursement;
 import com.revature.models.User;
 import com.revature.models.UserDTO;
 import com.revature.services.UserService;
@@ -33,29 +34,60 @@ public class RequestHelper {
 		}
 		
 		String body = s.toString();
-		System.out.println(body);
+		System.out.println("Post body data: " + body);
+		
 		LoginTemplate loginAttempt = om.readValue(body, LoginTemplate.class);
+
 		String username = loginAttempt.getUsername();
 		String password = loginAttempt.getPassword();
-		
+
 		logger.info("User attempted to login with username " + username);
-		User e = UserService.confirmLogin(username, password);
-		if(e != null) {
+		System.out.println("User attempted to login with username " + username);
+		User u = UserService.verifyLogin(username, password);
+		if (u != null) {
 			HttpSession session = req.getSession();
-			// Gets the current session, or creates one if it did not exist
-			session.setAttribute("username", username);
-			
+
+			session.setAttribute("currentuser", u);
+
 			PrintWriter out = res.getWriter();
+
 			res.setContentType("application/json");
-			UserDTO eDTO = UserService.convertToDTO(e);
-			
-			out.println(om.writeValueAsString(eDTO));
-			
+
+			UserDTO eDTO = UserService.convertToDTO(u);
+
+			String jsonStr = om.writeValueAsString(eDTO);
+			out.println(jsonStr);
+
 			logger.info(username + " has successfully logged in");
+			System.out.println(username + " has successfully logged in");
 		} else {
 			res.setContentType("application/json");
 			res.setStatus(204);
+			System.out.println(username + " failed to log in");
 		}
+		
+//		LoginTemplate loginAttempt = om.readValue(body, LoginTemplate.class);
+//		String username = loginAttempt.getUsername();
+//		String password = loginAttempt.getPassword();
+//		
+//		logger.info("User attempted to login with username " + username);
+//		User e = UserService.confirmLogin(username, password);
+//		if(e != null) {
+//			HttpSession session = req.getSession();
+//			// Gets the current session, or creates one if it did not exist
+//			session.setAttribute("username", username);
+//			
+//			PrintWriter out = res.getWriter();
+//			res.setContentType("application/json");
+//			UserDTO eDTO = UserService.convertToDTO(e);
+//			
+//			out.println(om.writeValueAsString(eDTO));
+//			
+//			logger.info(username + " has successfully logged in");
+//		} else {
+//			res.setContentType("application/json");
+//			res.setStatus(204);
+//		}
 	}
 
 	public static void processLogout(HttpServletRequest req, HttpServletResponse res) {
@@ -69,23 +101,12 @@ public class RequestHelper {
 		
 		res.setStatus(200);
 	}
-
-	public static void processEmployees(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		res.setContentType("application/json");
-		List<User> all = UserService.findAll();
-		List<UserDTO> allDTO = new ArrayList<>();
-		
-		for(User e : all) {
-			allDTO.add(new UserDTO(e.getUser_id(),
-					e.getFirst_name(),
-					e.getLast_name(),
-					e.getUsername(),
-					e.getPassword()
-		}
-		
-		String json = om.writeValueAsString(all);
-		
-		PrintWriter out = res.getWriter();
-		out.println(json);
+	
+	public static void getReimb(HttpServletRequest req, HttpServletResponse res) {
+		int id = Integer.parseInt(req.getParameter("id"));
+		Reimbursement m = new Reimbursement();
+		m.setReimb_author(id);
+//		User u = UserService.getUserReimb(m);
 	}
+
 }

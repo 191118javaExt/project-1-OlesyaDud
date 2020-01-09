@@ -7,15 +7,13 @@ import { ErsComponent } from './ers/ers.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ErsComponent,
     LoginComponent,
-    NavbarComponent,
-    HomeComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,9 @@
-<div class="container-fluid login">
 
+<app-navbar></app-navbar>
+<div class="container-fluid login">
   <div class="row">
 
-      <div class="skewed-div">
+      <!-- <div class="skewed-div">
           <div class="inside-div">
             <form>
               <div class="input-group mb-3">
@@ -27,9 +28,27 @@
               </div>
 
           </div>
-        </div>
+        </div> -->
 
+<div class="col">
+  <form>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">USERNAME</span>
+      </div>
+      <input [(ngModel)]="username" type="text" class="form-control" placeholder="username" name="username" required>
+    </div>
 
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">PASSWORD</span>
+      </div>
+      <input [(ngModel)]="password" type="password" class="form-control" placeholder="password" name="password" required>
+    </div>
+
+    <button (click)="sendLogin()" class="btn btn-success">SUBMIT LOGIN</button>
+  </form>
+</div>
   </div>
 
 </div>

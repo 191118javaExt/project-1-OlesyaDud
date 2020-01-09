@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +20,7 @@ export class LoginComponent implements OnInit {
       (response: User) => {
         sessionStorage.setItem('currentUser', JSON.stringify(response));
         console.log(response);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/ers']);
       }
     )
   }
